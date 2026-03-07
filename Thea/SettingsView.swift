@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum VolumeUnit: String, CaseIterable {
+enum VolumeUnit: String, CaseIterable, Codable {
     case liters
     case gallons
 }
