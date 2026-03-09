@@ -9,17 +9,13 @@ import SwiftUI
 
 struct BatchListView: View {
 
-    private var batchData: BatchPreview = []
+    private var batchData : [Batch] =  BatchPreview.samples
     var body: some View {
-        List {
-            ForEach(batchData, \id.self) {
-                VStack{
-                    Text($0.name)
-                    Text($0.startDate)
-                    Text($0.volume)
-                    Text($0.unit)
-                    Text($0.status)
-                }}
+        List(batchData) { batch in
+                    Text(batch.name)
+                    Text(batch.status.rawValue)
+            Text("Days fermenting: \(batch.daysFermenting)")
+
         }
     }
 }
