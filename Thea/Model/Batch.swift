@@ -25,4 +25,15 @@ enum BatchStatus: String, Codable {
     case fermenting
     case bottled
     case finished
+
+    var displayName: String {
+        switch self {
+        case .fermenting:
+            "Fermenting"
+        case .bottled:
+            "Bottled"
+        case .finished:
+            "Finished"
+        }
+    }
 }

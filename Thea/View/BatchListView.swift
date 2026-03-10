@@ -11,10 +11,14 @@ struct BatchListView: View {
 
     private var batchData : [Batch] =  BatchPreview.samples
     var body: some View {
-        List(batchData) { batch in
+        NavigationStack{
+            List(batchData) { batch in
+                    NavigationLink(destination: BatchDetailView(batch: batch), label:                     {
+                        VStack(alignment: .leading){
                     Text(batch.name)
-                    Text(batch.status.rawValue)
-            Text("Days fermenting: \(batch.daysFermenting)")
+                    Text(batch.status.displayName)
+                    Text("Days fermenting: \(batch.daysFermenting)")
+                }})}
 
         }
     }
