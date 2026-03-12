@@ -17,6 +17,8 @@ struct AddBatchView: View {
         numberFormatter.numberStyle = .decimal
         return numberFormatter
     }()
+
+    @Binding var savedData: Batch
     var body: some View {
         VStack{
             Form {
@@ -31,7 +33,10 @@ struct AddBatchView: View {
             }
 
             Button{
-                print("Batch saved")
+               savedData =  Batch(name: name, startDate: startDate, volume: volume, unit: unit, status: .fermenting)
+                batchData.append(savedData)
+
+
             }label: {
                 Text("Save")
             }
@@ -40,5 +45,5 @@ struct AddBatchView: View {
 }
 
 #Preview {
-    AddBatchView()
+    AddBatchView(savedData: .constant(Batch(name: "", startDate: Date(), volume: 29.0, unit: .gallons, status: .bottled)))
 }

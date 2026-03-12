@@ -26,7 +26,7 @@ struct BatchPreview {
         return Calendar.current.date(from: components)!
     }()
 
-    static let samples: [Batch] =
+    static var samples: [Batch] =
     [Batch(name: "Kombucha Mango", startDate: marchDate, volume: 10, unit: .liters, status: .fermenting),
     Batch(name: "Kombucha Ginger", startDate: februaryDate, volume: 8, unit: .liters, status: .bottled),
     Batch(name: "Kombucha Classic", startDate: Date(), volume: 5, unit: .liters, status: .finished)]
