@@ -9,9 +9,8 @@ import SwiftUI
 
 struct BatchListView: View {
 
-    var batchData : [Batch] =  BatchPreview.samples
+   @State var batchData : [Batch] =  BatchPreview.samples
     @State private var isAddBatchViewSheet: Bool = false
-    @State var savedData: Batch
     var body: some View {
         NavigationStack{
             List(batchData) { batch in
@@ -33,12 +32,14 @@ struct BatchListView: View {
             }
         }
         .sheet(isPresented: $isAddBatchViewSheet) {
-            AddBatchView(savedData: $savedData)
+            AddBatchView(onSave: { newBatch in
+                batchData.append(newBatch)
+            })
         }
     }
 }
 
 #Preview {
     NavigationStack{
-        BatchListView(savedData: Batch(name: "", startDate: Date(), volume: 20.0, unit: .gallons, status: .bottled))
+        BatchListView()
     }}
