@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct AddBatchView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var volume = 0.0
     @State private var unit : VolumeUnit = .liters
@@ -34,7 +35,7 @@ struct AddBatchView: View {
             Button{
                     let newBatch =  Batch(name: name, startDate: startDate, volume: volume, unit: unit, status: .fermenting)
                     onSave(newBatch)
-
+                dismiss()
             }label: {
                 Text("Save")
             }

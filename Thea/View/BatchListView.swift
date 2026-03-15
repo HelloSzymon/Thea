@@ -8,18 +8,13 @@
 import SwiftUI
 
 struct BatchListView: View {
-
    @State var batchData : [Batch] =  BatchPreview.samples
     @State private var isAddBatchViewSheet: Bool = false
     var body: some View {
         NavigationStack{
             List(batchData) { batch in
                     NavigationLink(destination: BatchDetailView(batch: batch), label:                     {
-                        VStack(alignment: .leading){
-                    Text(batch.name)
-                    Text(batch.status.displayName)
-                    Text("Days fermenting: \(batch.daysFermenting)")
-                }})}
+                BatchRowView(batch: batch)})}
 
         }
         .toolbar {
@@ -35,6 +30,8 @@ struct BatchListView: View {
             AddBatchView(onSave: { newBatch in
                 batchData.append(newBatch)
             })
+
+
         }
     }
 }
