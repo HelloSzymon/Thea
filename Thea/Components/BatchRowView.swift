@@ -18,6 +18,7 @@ struct BatchRowView: View {
                 HStack{
                     Text(batch.status.displayName)
                         .font(.subheadline)
+                        .foregroundStyle(batch.status.batchColor)
                     Text("\(batch.daysFermenting) days")
                 }
 
