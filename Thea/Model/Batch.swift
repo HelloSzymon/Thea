@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Batch: Identifiable, Codable {
     var id = UUID()
@@ -36,4 +37,15 @@ enum BatchStatus: String, Codable {
             "Finished"
         }
     }
+    var batchColor: Color {
+        switch self {
+        case .fermenting:
+                .green
+        case .bottled:
+                .orange
+        case .finished:
+                .gray
+        }
+    }
+
 }
