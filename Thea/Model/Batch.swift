@@ -49,3 +49,9 @@ enum BatchStatus: String, Codable {
     }
 
 }
+
+enum BatchSortOption: String {
+    case newest
+    case longestFermenting
+    case largestVolume
+}
