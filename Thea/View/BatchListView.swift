@@ -24,11 +24,26 @@ struct BatchListView: View {
     }
     var body: some View {
         NavigationStack{
-            List(batchData) { batch in
-                    NavigationLink(destination: BatchDetailView(batch: batch), label:                     {
-                BatchRowView(batch: batch)})}
+            List {
+                ForEach(batchData.indices, id: \.self) { index in
+                    let batch = batchData[index]
+                NavigationLink(destination: BatchDetailView(batch: batch), label:                     {
+                    BatchRowView(batch: batch)})
 
-        }
+
+                .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
+                    Button(role: .destructive) {
+                        batchData.remove(at: index)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+
+                    Button(role: .confirm) {
+                        batchData[index].status = .finished
+                    } label: {
+                        Label("Mark as finished", systemImage: "flag")
+                    }
+                }) }}
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button{
@@ -43,7 +58,7 @@ struct BatchListView: View {
                 batchData.append(newBatch)
             })
 
-
+        }
         }
     }
 }
