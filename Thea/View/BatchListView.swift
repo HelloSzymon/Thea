@@ -22,6 +22,30 @@ struct BatchListView: View {
             return batchData.sorted(by: { $0.daysFermenting < $1.daysFermenting })
         }
     }
+
+    func saveBatches(batch: [Batch]) {
+        do {
+            let data = try JSONEncoder().encode(batch)
+            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentDirectory.appendingPathComponent("batch.json")
+            try data.write(to: fileURL)
+        } catch {
+            print("Error saving JSON: \(error)")
+        }
+    }
+
+    func loadBatches() -> [Batch] {
+        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+                let data = try? Data(contentsOf: url) else {
+            return []
+        }
+        do {
+            return try JSONDecoder().decode([Batch].self, from: data)
+        } catch {
+            print("Error decoding JSON: \(error)")
+                  return []
+        }
+    }
     var body: some View {
         NavigationStack{
             List {
@@ -59,6 +83,9 @@ struct BatchListView: View {
             })
 
         }
+        }
+        .onAppear{
+            batchData = loadBatches()
         }
     }
 }
