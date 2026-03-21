@@ -68,6 +68,7 @@ struct BatchListView: View {
     }
 }
 
+
 #Preview {
     NavigationStack{
         BatchListView(vm: BatchViewModel())
