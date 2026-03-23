@@ -27,9 +27,15 @@ struct BatchListView: View {
     var body: some View {
         NavigationStack{
             List {
-                ForEach(sortedBatches) { batch in
-                NavigationLink(destination: BatchDetailView(batch: batch), label:                     {
-                    BatchRowView(batch: batch)})
+                ForEach(vm.batchData.indices, id: \.self) { index in
+                    let batch = vm.batchData[index]
+
+                    NavigationLink {
+                        EditBatchView(batch: $vm.batchData[index])
+                    } label: {
+                        BatchRowView(batch: batch)
+                    }
+
 
 
                 .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
