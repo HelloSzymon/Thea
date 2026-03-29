@@ -31,13 +31,15 @@ struct BatchListView: View {
                     let batch = vm.batchData[index]
 
                     NavigationLink {
-                        EditBatchView(batch: $vm.batchData[index])
+                        EditBatchView(
+                            batch: $vm.batchData[index],
+                            onSave: {
+                                vm.saveBatches(batch: vm.batchData)
+                            }
+                        )
                     } label: {
                         BatchRowView(batch: batch)
                     }
-
-
-
                 .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                     Button(role: .destructive) {
                         if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}){

@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct EditBatchView: View {
+    @Environment(\.dismiss) private var dismiss
     @Binding var batch: Batch
     private let numberFormatter: NumberFormatter = {
         var numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         return numberFormatter
     }()
-//    var onSave: (Batch) -> Void
+    var onSave: () -> Void
 
     var body: some View {
         VStack{
@@ -29,11 +30,26 @@ struct EditBatchView: View {
                 DatePicker("Start date", selection: $batch.startDate, displayedComponents: .date)
             }
         }
+        .toolbar{
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                }label: {
+                    Text("Done")
+
+                }.disabled(batch.name.isEmpty)
+            }
+        }
+        .onDisappear {
+            onSave()
+        }
     }
 }
 
 #Preview {
     EditBatchView(batch: .constant(
         Batch(name: "Test", startDate: Date(), volume: 100, unit: .liters, status: .bottled)
-    ))
+    ), onSave: {
+        print("")
+    })
 }
