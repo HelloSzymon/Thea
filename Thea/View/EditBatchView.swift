@@ -33,6 +33,7 @@ struct EditBatchView: View {
         .toolbar{
             ToolbarItem(placement: .topBarLeading) {
                 Button {
+                    onSave()
                     dismiss()
                 }label: {
                     Text("Done")
@@ -40,9 +41,7 @@ struct EditBatchView: View {
                 }.disabled(batch.name.isEmpty)
             }
         }
-        .onDisappear {
-            onSave()
-        }
+
     }
 }
 

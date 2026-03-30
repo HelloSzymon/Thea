@@ -27,19 +27,21 @@ struct BatchListView: View {
     var body: some View {
         NavigationStack{
             List {
-                ForEach(vm.batchData.indices, id: \.self) { index in
-                    let batch = vm.batchData[index]
+                ForEach(vm.batchData) { batch in
+//                    let batch = vm.batchData[index]
 
                     NavigationLink {
-                        EditBatchView(
-                            batch: $vm.batchData[index],
-                            onSave: {
-                                vm.saveBatches(batch: vm.batchData)
+                        if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}) {
+                            EditBatchView(
+
+                                batch: $vm.batchData[index],
+                                onSave: {
+                                    vm.saveBatches(batch: vm.batchData)
+                                }
+                            )}
+                            } label: {
+                                BatchRowView(batch: batch)
                             }
-                        )
-                    } label: {
-                        BatchRowView(batch: batch)
-                    }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
                     Button(role: .destructive) {
                         if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}){
@@ -75,9 +77,7 @@ struct BatchListView: View {
 
         }
         }
-        .onAppear{
-            vm.batchData = vm.loadBatches()
-        }
+     
     }
 }
 

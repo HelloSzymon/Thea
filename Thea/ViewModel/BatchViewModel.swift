@@ -11,6 +11,10 @@
 class BatchViewModel: ObservableObject {
     @Published var batchData : [Batch] =  BatchPreview.samples
 
+    init() {
+        batchData = loadBatches()
+    }
+
     func saveBatches(batch: [Batch]) {
         do {
             let data = try JSONEncoder().encode(batch)
@@ -23,15 +27,18 @@ class BatchViewModel: ObservableObject {
     }
 
     func loadBatches() -> [Batch] {
-        guard let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
-                let data = try? Data(contentsOf: url) else {
+        let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentDirectory.appendingPathComponent("batch.json")
+
+        guard let data = try? Data(contentsOf: fileURL) else {
             return []
         }
+
         do {
             return try JSONDecoder().decode([Batch].self, from: data)
         } catch {
             print("Error decoding JSON: \(error)")
-                  return []
+            return []
         }
     }
 }
