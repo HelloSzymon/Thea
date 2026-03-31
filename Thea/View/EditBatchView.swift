@@ -19,16 +19,7 @@ struct EditBatchView: View {
 
     var body: some View {
         VStack{
-            Form {
-                TextField("Name", text: $batch.name)
-                TextField("Volume", value: $batch.volume, formatter: numberFormatter)
-                Picker("Unit", selection: $batch.unit) {
-                    Text("Liters").tag(VolumeUnit.liters)
-                    Text("Gallons").tag(VolumeUnit.gallons)
-
-                }
-                DatePicker("Start date", selection: $batch.startDate, displayedComponents: .date)
-            }
+            BatchFormView(batch: $batch)
         }
         .toolbar{
             ToolbarItem(placement: .topBarLeading) {

@@ -9,32 +9,14 @@ import SwiftUI
 
 struct AddBatchView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var name = ""
-    @State private var volume = 0.0
-    @State private var unit : VolumeUnit = .liters
-    @State private var startDate: Date = Date()
-    private let numberFormatter: NumberFormatter = {
-        var numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        return numberFormatter
-    }()
+    @State private var batch = Batch.init(name: "", startDate: Date(), volume: 0, unit: .liters, status: .fermenting)
     var onSave: (Batch) -> Void
     var body: some View {
         VStack{
-            Form {
-                TextField("Name", text: $name)
-                TextField("Volume", value: $volume, formatter: numberFormatter)
-                Picker("Unit", selection: $unit) {
-                    Text("Liters").tag(VolumeUnit.liters)
-                    Text("Gallons").tag(VolumeUnit.gallons)
-
-                }
-                DatePicker("Start date", selection: $startDate, displayedComponents: .date)
-            }
+          BatchFormView(batch: $batch)
 
             Button{
-                    let newBatch =  Batch(name: name, startDate: startDate, volume: volume, unit: unit, status: .fermenting)
-                    onSave(newBatch)
+                    onSave(batch)
                 dismiss()
             }label: {
                 Text("Save")
