@@ -20,6 +20,7 @@ struct BatchFormView: View {
             Form {
                 TextField("Name", text: $batch.name)
                 TextField("Volume", value: $batch.volume, formatter: numberFormatter)
+                    .keyboardType(.decimalPad)
                 Picker("Unit", selection: $batch.unit) {
                     Text("Liters").tag(VolumeUnit.liters)
                     Text("Gallons").tag(VolumeUnit.gallons)
