@@ -9,7 +9,11 @@
     import Combine
 
 class BatchViewModel: ObservableObject {
-    @Published var batchData : [Batch] =  BatchPreview.samples
+    @Published var batchData : [Batch] =  [] {
+        didSet {
+            saveBatches(batch: batchData)
+        }
+    }
 
     init() {
         batchData = loadBatches()
@@ -41,4 +45,6 @@ class BatchViewModel: ObservableObject {
             return []
         }
     }
+
+
 }

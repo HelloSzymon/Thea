@@ -19,7 +19,7 @@ struct AddBatchView: View {
           BatchFormView(batch: $batch)
 
             Button{
-               let trimmed =  batch.name.trimmingCharacters(in: .whitespacesAndNewlines)
+                let trimmed =  batch.name.trimmingCharacters(in: .whitespacesAndNewlines)
                 batch.name = trimmed
                     onSave(batch)
                 dismiss()

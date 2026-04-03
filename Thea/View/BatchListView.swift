@@ -26,18 +26,18 @@ struct BatchListView: View {
 
     var body: some View {
         NavigationStack{
+            if !vm.batchData.isEmpty {
             List {
                 ForEach(vm.batchData) { batch in
-//                    let batch = vm.batchData[index]
 
                     NavigationLink {
                         if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}) {
                             EditBatchView(
 
                                 batch: $vm.batchData[index],
-                                onSave: {
-                                    vm.saveBatches(batch: vm.batchData)
-                                }
+//                                onSave: {
+//                                    vm.saveBatches(batch: vm.batchData)
+//                                }
                             )}
                             } label: {
                                 BatchRowView(batch: batch)
@@ -46,7 +46,7 @@ struct BatchListView: View {
                     Button(role: .destructive) {
                         if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}){
                             vm.batchData.remove(at: index)}
-                            vm.saveBatches(batch: vm.batchData)
+//                            vm.saveBatches(batch: vm.batchData)
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
@@ -55,7 +55,7 @@ struct BatchListView: View {
                         if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
 
                                             vm.batchData[index].status = .finished
-                                            vm.saveBatches(batch: vm.batchData)
+//                                            vm.saveBatches(batch: vm.batchData)
                                         }
                     } label: {
                         Label("Mark as finished", systemImage: "flag")
@@ -70,14 +70,34 @@ struct BatchListView: View {
                 }
             }
         }
-        .sheet(isPresented: $isAddBatchViewSheet) {
+
+            }
+else {
+    VStack{
+        Image(systemName: "leaf")
+            .font(.largeTitle)
+        Text("Add your first batch")
+            .fontWeight(.bold)
+        Button{
+            isAddBatchViewSheet.toggle()
+        } label: {
+            HStack{
+                Text("Add batch")
+
+                Image(systemName: "plus")
+            }
+
+        }
+    }
+}
+            
+        }    .sheet(isPresented: $isAddBatchViewSheet) {
             AddBatchView(onSave: { newBatch in
                 vm.batchData.append(newBatch)
             })
 
         }
-        }
-     
+
     }
 }
 

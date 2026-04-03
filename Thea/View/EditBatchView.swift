@@ -15,7 +15,7 @@ struct EditBatchView: View {
         numberFormatter.numberStyle = .decimal
         return numberFormatter
     }()
-    var onSave: () -> Void
+//    var onSave: () -> Void
 
     var body: some View {
         VStack{
@@ -24,7 +24,7 @@ struct EditBatchView: View {
         .toolbar{
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    onSave()
+//                    onSave()
                     dismiss()
                 }label: {
                     Text("Done")
@@ -39,7 +39,9 @@ struct EditBatchView: View {
 #Preview {
     EditBatchView(batch: .constant(
         Batch(name: "Test", startDate: Date(), volume: 100, unit: .liters, status: .bottled)
-    ), onSave: {
-        print("")
-    })
+    )
+//                  , onSave: {
+//        print("")
+//    }
+    )
 }
