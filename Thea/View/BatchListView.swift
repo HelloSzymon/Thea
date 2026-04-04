@@ -11,33 +11,40 @@ struct BatchListView: View {
     @StateObject var vm =  BatchViewModel()
     @State private var isAddBatchViewSheet: Bool = false
     @State var sortOption : BatchSortOption = .largestVolume
+    @State var searchText = ""
+
+    private var filteredBatches: [Batch] {
+        if searchText.isEmpty {
+            return vm.batchData
+        } else {
+            return vm.batchData.filter{  $0.name.localizedCaseInsensitiveContains(searchText)}
+        }
+
+    }
 
     private var sortedBatches: [Batch] {
         switch sortOption {
         case .largestVolume:
-            return vm.batchData.sorted(by: { $0.volume > $1.volume })
+            return filteredBatches.sorted { $0.volume > $1.volume }
         case .newest:
-            return vm.batchData.sorted(by: { $0.startDate > $1.startDate })
+            return filteredBatches.sorted { $0.startDate > $1.startDate }
         case .longestFermenting:
-            return vm.batchData.sorted(by: { $0.daysFermenting < $1.daysFermenting })
+            return filteredBatches.sorted { $0.daysFermenting < $1.daysFermenting }
         }
     }
-
 
     var body: some View {
         NavigationStack{
             if !vm.batchData.isEmpty {
             List {
-                ForEach(vm.batchData) { batch in
+
+                ForEach(sortedBatches) { batch in
 
                     NavigationLink {
                         if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}) {
                             EditBatchView(
 
                                 batch: $vm.batchData[index],
-//                                onSave: {
-//                                    vm.saveBatches(batch: vm.batchData)
-//                                }
                             )}
                             } label: {
                                 BatchRowView(batch: batch)
@@ -46,7 +53,7 @@ struct BatchListView: View {
                     Button(role: .destructive) {
                         if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}){
                             vm.batchData.remove(at: index)}
-//                            vm.saveBatches(batch: vm.batchData)
+
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
@@ -55,7 +62,7 @@ struct BatchListView: View {
                         if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
 
                                             vm.batchData[index].status = .finished
-//                                            vm.saveBatches(batch: vm.batchData)
+
                                         }
                     } label: {
                         Label("Mark as finished", systemImage: "flag")
@@ -70,8 +77,10 @@ struct BatchListView: View {
                 }
             }
         }
+        .searchable(text: $searchText)
 
             }
+            
 else {
     VStack{
         Image(systemName: "leaf")
