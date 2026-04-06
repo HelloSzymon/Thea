@@ -12,13 +12,15 @@ struct BatchListView: View {
     @State private var isAddBatchViewSheet: Bool = false
     @State var sortOption : BatchSortOption = .largestVolume
     @State var searchText = ""
+    @State private var debouncedSearchText = ""
+    @State private var searchWorkItem: DispatchWorkItem?
 
     private var filteredBatches: [Batch] {
         vm.batchData.filter { batch in
 
             let matchesSearch =
-                searchText.isEmpty ||
-                batch.name.localizedCaseInsensitiveContains(searchText)
+                debouncedSearchText.count < 2 ||
+                batch.name.localizedCaseInsensitiveContains(debouncedSearchText)
 
             let matchesStatus =
                 selectedStatus == nil ||
@@ -137,6 +139,14 @@ else {
     }
 }
 .searchable(text: $searchText)
+.onChange(of: searchText) {
+    searchWorkItem?.cancel()
+    let task = DispatchWorkItem {
+        debouncedSearchText = searchText
+    }
+    searchWorkItem = task
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: task)
+}
 
 
 
