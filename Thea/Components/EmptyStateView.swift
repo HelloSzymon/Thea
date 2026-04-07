@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct EmptyStateView: View {
+    var onAddTap: () -> Void
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            Image(systemName: "leaf")
+                .font(.largeTitle)
+            Text("Add your first batch")
+                .fontWeight(.bold)
+            Button{
+                onAddTap()
+            } label: {
+                HStack{
+                    Text("Add batch")
+
+                    Image(systemName: "plus")
+                }
+
+            }
+        }
     }
 }
 
 #Preview {
-    EmptyStateView()
+    EmptyStateView(onAddTap: {})
 }
