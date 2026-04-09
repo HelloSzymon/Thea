@@ -11,23 +11,38 @@ struct BatchDetailView: View {
 
     var batch: Batch
     var body: some View {
-        VStack(spacing: 16){
-            Text(batch.name)
-                .font(.title)
-                    .bold()
-            Text(batch.status.displayName)
-                .foregroundStyle(batch.status.batchColor)
-            Divider()
-            Text("\(batch.volume) \(batch.unit.rawValue)")
-            Text(batch.startDate.formatted())
-            Text("\(batch.daysFermenting)")
-            Divider()
-
-
-            ProgressView(value: 1, total: 14)
-                .progressViewStyle(.linear)
+        ScrollView{
+            VStack(spacing: 16){
+                VStack(alignment: .leading){
+                    Text(batch.name)
+                        .font(.title)
+                        .bold()
+                    Text(batch.status.displayName)
+                        .foregroundStyle(batch.status.batchColor)
+                }
                 .padding()
-        }}
+                .background(.thinMaterial)
+                .cornerRadius(15)
+                VStack(alignment: .leading){
+                    Text("Volume: \(batch.volume) \(batch.unit.rawValue)")
+                    Text(batch.startDate.formatted())
+                    Text("\(batch.daysFermenting)")
+                }
+                .padding()
+                .background(.thinMaterial)
+                .cornerRadius(15)
+                    VStack(alignment: .leading){
+                    Text("Fermentation progress")
+                        .font(.headline)
+                    ProgressView(value: Double(batch.daysFermenting), total: 14)
+                        .progressViewStyle(.linear)
+                        .padding()
+                }
+                .padding()
+                .background(.thinMaterial)
+                .cornerRadius(15)
+            }}.padding()
+    }
 }
 
 #Preview {
