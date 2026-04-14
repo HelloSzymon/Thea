@@ -20,6 +20,19 @@ struct Batch: Identifiable, Codable {
         let components = Calendar.current.dateComponents([.day], from: startDate, to: Date())
         return max(components.day ?? 0, 0)
     }
+    var fermentationTargetDate: Int {
+        14
+    }
+    var daysRemaining: Int {
+        max(fermentationTargetDate - daysFermenting, 0)
+    }
+
+    var progress: Double {
+        min(Double(daysFermenting) / Double(fermentationTargetDate), 1.0)
+    }
+    var isReady: Bool {
+        daysFermenting >= fermentationTargetDate
+    }
 }
 
 enum BatchStatus: String, Codable {
