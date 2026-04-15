@@ -20,9 +20,7 @@ struct Batch: Identifiable, Codable {
         let components = Calendar.current.dateComponents([.day], from: startDate, to: Date())
         return max(components.day ?? 0, 0)
     }
-    var fermentationTargetDate: Int {
-        14
-    }
+    var fermentationTargetDate = 14
     var daysRemaining: Int {
         max(fermentationTargetDate - daysFermenting, 0)
     }
