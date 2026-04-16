@@ -1,0 +1,36 @@
+---
+description: Thea iOS design and architecture constraints
+globs: Thea/**/*.swift
+alwaysApply: false
+---
+
+# Thea: iOS Product and Design Guardrails
+
+## Product scope (MVP+)
+- Core: list/add/edit/delete/search/sort/status/persistence.
+- Next: fermentation progress, ETA, ready state, notes quality, readability.
+- Prefer incremental additions; no massive feature bundles.
+
+## UI direction
+- Calm premium + natural bio aesthetic.
+- Light minimal layout with strong spacing and hierarchy.
+- Rounded corners (16-20pt), subtle depth, no heavy borders.
+- Use translucent/material cards and soft blur where useful.
+
+## Color system
+- Primary green: #4F8A66
+- Kombucha yellow: #E6C36A
+- Accent amber: #C08A5D
+- Background: #F7F7F5
+- Text primary: #1C1C1E
+- Text secondary: #6B6B6B
+
+## Avoid
+- Pure white backgrounds.
+- Neon/saturated colors.
+- Heavy dark UI and clutter.
+
+## Screen priorities
+- Batch List: search, filters, glass cards, quick status scan.
+- Batch Detail: key metrics cards, progress ring, notes readability.
+- Add/Edit: simple form, clear hierarchy, strong primary action.
