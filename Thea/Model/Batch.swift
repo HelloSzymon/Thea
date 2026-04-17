@@ -31,6 +31,8 @@ struct Batch: Identifiable, Codable {
     var isReady: Bool {
         daysFermenting >= fermentationTargetDate
     }
+
+
 }
 
 enum BatchStatus: String, Codable {
