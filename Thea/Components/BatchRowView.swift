@@ -21,6 +21,10 @@ struct BatchRowView: View {
                         .foregroundStyle(batch.status.batchColor)
                     Text("\(batch.daysFermenting) days")
                 }
+                HStack{
+                    Text(Image(systemName: "clock"))
+                    Text("\(batch.daysFermenting)")
+                }
 
             }
             Spacer()
