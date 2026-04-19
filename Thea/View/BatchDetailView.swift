@@ -42,7 +42,7 @@ struct BatchDetailView: View {
                     VStack(alignment: .leading){
                     Text("Fermentation progress")
                         .font(.headline)
-                        ProgressView(value: Double(batch.progress), total: 14)
+                        ProgressView(value: Double(batch.progress), total: Double(batch.fermentationTargetDate))
                         .progressViewStyle(.linear)
 
                         Text("\(batch.daysRemaining) days remaining")

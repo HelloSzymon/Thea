@@ -19,11 +19,10 @@ struct BatchRowView: View {
                     Text(batch.status.displayName)
                         .font(.subheadline)
                         .foregroundStyle(batch.status.batchColor)
-                    Text("\(batch.daysFermenting) days")
                 }
                 HStack{
                     Text(Image(systemName: "clock"))
-                    Text("\(batch.daysFermenting)")
+                    Text("\(batch.daysFermenting) days")
                 }
 
             }
