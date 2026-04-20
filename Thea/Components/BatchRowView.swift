@@ -23,11 +23,13 @@ struct BatchRowView: View {
                 HStack{
                     Text(Image(systemName: "clock"))
                     Text("\(batch.daysFermenting) days")
+                        .foregroundStyle(.secondary)
                 }
 
             }
             Spacer()
             Text("\(batch.volume, specifier: "%.1f") \(batch.unit.rawValue)")
+                .font(.subheadline)
 
         }
         .padding()
