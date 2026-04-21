@@ -16,8 +16,8 @@ struct BatchListContentView: View {
             ForEach(sortedBatches) { batch in
 
                 NavigationLink {
-                    EditBatchView(
-                        batch: Binding(
+                    BatchDetailView(
+                        vm: vm, batch: Binding(
                             get: {
                                 vm.batchData.first(where: { $0.id == batch.id })!
                             },

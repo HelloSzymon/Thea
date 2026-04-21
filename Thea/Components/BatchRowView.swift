@@ -17,8 +17,13 @@ struct BatchRowView: View {
                     .font(.headline)
                 HStack{
                     Text(batch.status.displayName)
-                        .font(.subheadline)
-                        .foregroundStyle(batch.status.batchColor)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(Color.mainBlack)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(batch.status.batchColor.opacity(0.15))
+                        .clipShape(.capsule)
+
                 }
                 HStack{
                     Text(Image(systemName: "clock"))

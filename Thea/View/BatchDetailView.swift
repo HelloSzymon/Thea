@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct BatchDetailView: View {
-
-    var batch: Batch
+    @ObservedObject var vm: BatchViewModel
+    @Binding var batch: Batch
     var body: some View {
         ScrollView{
             VStack(spacing: 16){
@@ -60,9 +60,30 @@ struct BatchDetailView: View {
                 .background(.thinMaterial)
                 .cornerRadius(15)
             }}.padding()
+            .toolbar{
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink {
+                        EditBatchView(
+                            batch: Binding(
+                                get: {
+                                    vm.batchData.first(where: { $0.id == batch.id })!
+                                },
+                                set: { updated in
+                                    if let index = vm.batchData.firstIndex(where: { $0.id == updated.id }) {
+                                        vm.batchData[index] = updated
+                                    }
+                                }
+                            )
+                        )
+                    }label: {
+                        Text("Edit")
+
+                    }
+                }
+            }
     }
 }
 
 #Preview {
-    BatchDetailView(batch: BatchPreview.samples[0])
+    BatchDetailView(vm: BatchViewModel(), batch: .constant(BatchPreview.samples[0]))
 }
