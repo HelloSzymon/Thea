@@ -10,47 +10,46 @@ import SwiftUI
 struct BatchListContentView: View {
     @ObservedObject var vm: BatchViewModel
     var sortedBatches: [Batch]
+
+    private func binding(for batch: Batch) -> Binding<Batch>? {
+        guard let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) else {
+            return nil
+        }
+
+        return Binding(
+            get: { vm.batchData[index] },
+            set: { vm.batchData[index] = $0 }
+        )
+    }
+
     var body: some View {
         List {
-
             ForEach(sortedBatches) { batch in
-
-                NavigationLink {
-                    BatchDetailView(
-                        vm: vm, batch: Binding(
-                            get: {
-                                vm.batchData.first(where: { $0.id == batch.id })!
-                            },
-                            set: { updated in
-                                if let index = vm.batchData.firstIndex(where: { $0.id == updated.id }) {
-                                    vm.batchData[index] = updated
-                                }
+                if let batchBinding = binding(for: batch) {
+                    NavigationLink {
+                        BatchDetailView(vm: vm, batch: batchBinding)
+                    } label: {
+                        BatchRowView(batch: batch)
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button(role: .destructive) {
+                            if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
+                                vm.batchData.remove(at: index)
                             }
-                        )
-                    )
-                } label: {
-                            BatchRowView(batch: batch)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
                         }
-            .swipeActions(edge: .trailing, allowsFullSwipe: false, content: {
-                Button(role: .destructive) {
-                    if let index = vm.batchData.firstIndex(where: {$0.id == batch.id}){
-                        vm.batchData.remove(at: index)}
 
-                } label: {
-                    Label("Delete", systemImage: "trash")
+                        Button {
+                            if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
+                                vm.batchData[index].status = .finished
+                            }
+                        } label: {
+                            Label("Mark as finished", systemImage: "flag")
+                        }
+                    }
                 }
-
-                Button(role: .confirm) {
-                    if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
-
-                                        vm.batchData[index].status = .finished
-
-                                    }
-                } label: {
-                    Label("Mark as finished", systemImage: "flag")
-                }
-            }) }}
+            }
+        }
     }
 }
-
-

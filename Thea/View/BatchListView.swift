@@ -43,7 +43,6 @@ struct BatchListView: View {
     @State private var selectedStatus: BatchStatus?
 
     var body: some View {
-        NavigationStack{
             if vm.batchData.isEmpty {
                 EmptyStateView{
                     isAddBatchViewSheet.toggle()
@@ -68,21 +67,21 @@ else {
 }
 
 
+.sheet(isPresented: $isAddBatchViewSheet) {
+   AddBatchView(onSave: { newBatch in
+       vm.batchData.append(newBatch)
+   })
 
+}
+.toolbar {
+   BatchToolbarView(selectedStatus: $selectedStatus) {
+       isAddBatchViewSheet.toggle()
+   }
+}
 
 }
             
-        }    .sheet(isPresented: $isAddBatchViewSheet) {
-            AddBatchView(onSave: { newBatch in
-                vm.batchData.append(newBatch)
-            })
 
-        }
-        .toolbar {
-            BatchToolbarView(selectedStatus: $selectedStatus) {
-                isAddBatchViewSheet.toggle()
-            }
-        }
     }
 }
 

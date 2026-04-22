@@ -10,6 +10,18 @@ import SwiftUI
 struct BatchDetailView: View {
     @ObservedObject var vm: BatchViewModel
     @Binding var batch: Batch
+
+    private var editableBatchBinding: Binding<Batch>? {
+        guard let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) else {
+            return nil
+        }
+
+        return Binding(
+            get: { vm.batchData[index] },
+            set: { vm.batchData[index] = $0 }
+        )
+    }
+
     var body: some View {
         ScrollView{
             VStack(spacing: 16){
@@ -62,22 +74,12 @@ struct BatchDetailView: View {
             }}.padding()
             .toolbar{
                 ToolbarItem(placement: .topBarLeading) {
-                    NavigationLink {
-                        EditBatchView(
-                            batch: Binding(
-                                get: {
-                                    vm.batchData.first(where: { $0.id == batch.id })!
-                                },
-                                set: { updated in
-                                    if let index = vm.batchData.firstIndex(where: { $0.id == updated.id }) {
-                                        vm.batchData[index] = updated
-                                    }
-                                }
-                            )
-                        )
-                    }label: {
-                        Text("Edit")
-
+                    if let editableBatchBinding {
+                        NavigationLink {
+                            EditBatchView(batch: editableBatchBinding)
+                        } label: {
+                            Text("Edit")
+                        }
                     }
                 }
             }
