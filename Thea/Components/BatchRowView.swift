@@ -37,6 +37,9 @@ struct BatchRowView: View {
                 .font(.subheadline)
 
         }
+        .background(.thinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .shadow(color: .black.opacity(0.12), radius: 6, y: 2)
         .padding()
     }
 }

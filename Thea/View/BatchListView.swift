@@ -14,6 +14,15 @@ struct BatchListView: View {
     @State var searchText = ""
     @State private var debouncedSearchText = ""
     @State private var searchWorkItem: DispatchWorkItem?
+    func handlingSearchChange() {
+        searchWorkItem?.cancel()
+        let task = DispatchWorkItem {
+            debouncedSearchText = searchText
+        }
+        searchWorkItem = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: task)
+    }
+
 
     private var filteredBatches: [Batch] {
         vm.batchData.filter { batch in
@@ -41,47 +50,32 @@ struct BatchListView: View {
     }
 
     @State private var selectedStatus: BatchStatus?
-
     var body: some View {
+        Group {
             if vm.batchData.isEmpty {
-                EmptyStateView{
+                EmptyStateView {
                     isAddBatchViewSheet.toggle()
                 }
-          }
-            else if sortedBatches.isEmpty {
+            } else if sortedBatches.isEmpty {
                 NoResultsView()
-
+            } else {
+                BatchListContentView(vm: vm, sortedBatches: sortedBatches)
             }
-
-else {
-    BatchListContentView(vm: vm, sortedBatches: sortedBatches)
-
-.searchable(text: $searchText)
-.onChange(of: searchText) {
-    searchWorkItem?.cancel()
-    let task = DispatchWorkItem {
-        debouncedSearchText = searchText
-    }
-    searchWorkItem = task
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: task)
-}
-
-
-.sheet(isPresented: $isAddBatchViewSheet) {
-   AddBatchView(onSave: { newBatch in
-       vm.batchData.append(newBatch)
-   })
-
-}
-.toolbar {
-   BatchToolbarView(selectedStatus: $selectedStatus) {
-       isAddBatchViewSheet.toggle()
-   }
-}
-
-}
-            
-
+        }
+        .searchable(text: $searchText)
+        .onChange(of: searchText) {
+            handlingSearchChange()
+        }
+        .sheet(isPresented: $isAddBatchViewSheet) {
+            AddBatchView(onSave: { newBatch in
+                vm.batchData.append(newBatch)
+            })
+        }
+        .toolbar {
+            BatchToolbarView(selectedStatus: $selectedStatus) {
+                isAddBatchViewSheet.toggle()
+            }
+        }
     }
 }
 
