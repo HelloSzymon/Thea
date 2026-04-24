@@ -31,6 +31,11 @@ struct BatchListContentView: View {
                     } label: {
                         BatchRowView(batch: batch)
                     }
+                    .buttonStyle(.plain)
+                    .navigationLinkIndicatorVisibility(.hidden)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button(role: .destructive) {
                             if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
@@ -51,5 +56,6 @@ struct BatchListContentView: View {
                 }
             }
         }
+        .listStyle(.plain)
     }
 }

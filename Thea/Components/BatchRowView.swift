@@ -33,14 +33,20 @@ struct BatchRowView: View {
 
             }
             Spacer()
-            Text("\(batch.volume, specifier: "%.1f") \(batch.unit.rawValue)")
-                .font(.subheadline)
+            VStack(alignment: .trailing, spacing: 16) {
+                Text("\(batch.volume, specifier: "%.1f") \(batch.unit.rawValue)")
+                    .font(.subheadline)
+                Image(systemName: "chevron.right")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
 
         }
+        .padding()
         .background(.thinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
         .shadow(color: .black.opacity(0.12), radius: 6, y: 2)
-        .padding()
+
     }
 }
 
