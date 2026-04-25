@@ -45,7 +45,7 @@ struct BatchListView: View {
         case .newest:
             return filteredBatches.sorted { $0.startDate > $1.startDate }
         case .longestFermenting:
-            return filteredBatches.sorted { $0.daysFermenting < $1.daysFermenting }
+            return filteredBatches.sorted { $0.daysFermenting > $1.daysFermenting }
         }
     }
 
@@ -81,6 +81,7 @@ struct BatchListView: View {
 
 
 #Preview {
-    BatchListView()
-}
+    NavigationStack{
+        BatchListView()
+    }}
 

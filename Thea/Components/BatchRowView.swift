@@ -23,7 +23,15 @@ struct BatchRowView: View {
                         .padding(.vertical, 5)
                         .background(batch.status.batchColor.opacity(0.15))
                         .clipShape(.capsule)
-
+                    if batch.isReady && batch.status != .finished {
+                        Text("Ready")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(Color.green)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(.green.opacity(0.15))
+                        .clipShape(.capsule)
+                    }
                 }
                 HStack{
                     Text(Image(systemName: "clock"))
@@ -51,5 +59,5 @@ struct BatchRowView: View {
 }
 
 #Preview {
-    BatchRowView(batch: Batch(name: "Kombucha", startDate: Date(), volume: 10, unit: .gallons, status: .finished))
+    BatchRowView(batch: Batch(name: "Kombucha", startDate: Date(), volume: 10, unit: .gallons, status: .fermenting))
 }
