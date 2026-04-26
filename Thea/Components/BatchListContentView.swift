@@ -22,6 +22,17 @@ struct BatchListContentView: View {
         )
     }
 
+    private func primaryAction(for batch: Batch) -> (title: String, icon: String, nextStatus: BatchStatus)? {
+        switch batch.status {
+        case .fermenting where batch.isReady:
+            return ("Mark as bottled", "takeoutbag.and.cup.and.straw", .bottled)
+        case .bottled:
+            return ("Mark as finished", "flag", .finished)
+        default:
+            return nil
+        }
+    }
+
     var body: some View {
         List {
             ForEach(sortedBatches) { batch in
@@ -37,20 +48,22 @@ struct BatchListContentView: View {
                     .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        if let action = primaryAction(for: batch) {
+                            Button {
+                                if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
+                                    vm.batchData[index].status = action.nextStatus
+                                }
+                            } label: {
+                                Label(action.title, systemImage: action.icon)
+                            }
+                        }
+
                         Button(role: .destructive) {
                             if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
                                 vm.batchData.remove(at: index)
                             }
                         } label: {
                             Label("Delete", systemImage: "trash")
-                        }
-
-                        Button {
-                            if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
-                                vm.batchData[index].status = .finished
-                            }
-                        } label: {
-                            Label("Mark as finished", systemImage: "flag")
                         }
                     }
                 }

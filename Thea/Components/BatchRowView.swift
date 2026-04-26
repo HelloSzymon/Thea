@@ -35,9 +35,18 @@ struct BatchRowView: View {
                 }
                 HStack{
                     Text(Image(systemName: "clock"))
-                    Text("\(batch.daysFermenting) days")
-                        .foregroundStyle(.secondary)
-                }
+
+                    if batch.isReady && batch.status != .finished {
+                        Text("Ready for bottling")
+                            .foregroundStyle(.secondary)
+                    }
+                    else if  batch.daysFermenting < 2 {
+                        Text("\(batch.daysFermenting) day")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("\(batch.daysFermenting) days")
+                            .foregroundStyle(.secondary)
+                    }}
 
             }
             Spacer()
