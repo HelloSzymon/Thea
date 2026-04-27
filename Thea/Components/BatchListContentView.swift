@@ -10,6 +10,7 @@ import SwiftUI
 struct BatchListContentView: View {
     @ObservedObject var vm: BatchViewModel
     var sortedBatches: [Batch]
+    @State private var batchToDelete: Batch?
 
     private func binding(for batch: Batch) -> Binding<Batch>? {
         guard let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) else {
@@ -59,16 +60,34 @@ struct BatchListContentView: View {
                         }
 
                         Button(role: .destructive) {
-                            if let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
-                                vm.batchData.remove(at: index)
-                            }
+                            batchToDelete = batch
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
+
                     }
                 }
             }
         }
         .listStyle(.plain)
+        .confirmationDialog(
+            "Delete batch?",
+            isPresented: Binding(
+                get: { batchToDelete != nil },
+                set: { if !$0 { batchToDelete = nil } }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button("Delete", role: .destructive) {
+                if let id = batchToDelete?.id,
+                   let index = vm.batchData.firstIndex(where: { $0.id == id }) {
+                    vm.batchData.remove(at: index)
+                }
+                batchToDelete = nil
+            }
+            Button("Cancel", role: .cancel) {
+                batchToDelete = nil
+            }
+        }
     }
 }

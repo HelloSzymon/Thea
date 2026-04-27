@@ -41,7 +41,7 @@ struct BatchDetailView: View {
                     HStack{
                         Text("Volume:").font(.caption)
                             .foregroundStyle(.secondary)
-                        Text("\(batch.volume) \(batch.unit.rawValue)")
+                        Text("\(batch.volume, specifier: "%.2f") \(batch.unit.rawValue)")
 
                     }
                     Text(batch.startDate.formatted())
