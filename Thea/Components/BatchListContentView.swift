@@ -11,6 +11,8 @@ struct BatchListContentView: View {
     @ObservedObject var vm: BatchViewModel
     var sortedBatches: [Batch]
     @State private var batchToDelete: Batch?
+    @State private var recentlyDeletedBatch: Batch?
+    @State private var showUndoAlert = false
 
     private func binding(for batch: Batch) -> Binding<Batch>? {
         guard let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) else {
@@ -79,15 +81,31 @@ struct BatchListContentView: View {
             titleVisibility: .visible
         ) {
             Button("Delete", role: .destructive) {
-                if let id = batchToDelete?.id,
-                   let index = vm.batchData.firstIndex(where: { $0.id == id }) {
+                if let batch = batchToDelete,
+                   let index = vm.batchData.firstIndex(where: { $0.id == batch.id }) {
+                    recentlyDeletedBatch = batch
                     vm.batchData.remove(at: index)
+                    showUndoAlert = true
                 }
                 batchToDelete = nil
             }
             Button("Cancel", role: .cancel) {
                 batchToDelete = nil
             }
+        }
+        .alert("Batch deleted", isPresented: $showUndoAlert) {
+            Button("Undo") {
+                if let deletedBatch = recentlyDeletedBatch,
+                   !vm.batchData.contains(where: { $0.id == deletedBatch.id }) {
+                    vm.batchData.append(deletedBatch)
+                }
+                recentlyDeletedBatch = nil
+            }
+            Button("OK", role: .cancel) {
+                recentlyDeletedBatch = nil
+            }
+        } message: {
+            Text("Do you want to restore this batch?")
         }
     }
 }
