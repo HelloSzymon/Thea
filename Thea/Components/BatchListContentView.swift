@@ -93,7 +93,7 @@ struct BatchListContentView: View {
                 batchToDelete = nil
             }
         }
-        .alert("Batch deleted", isPresented: $showUndoAlert) {
+        .alert("Batch removed", isPresented: $showUndoAlert) {
             Button("Undo") {
                 if let deletedBatch = recentlyDeletedBatch,
                    !vm.batchData.contains(where: { $0.id == deletedBatch.id }) {
@@ -105,7 +105,7 @@ struct BatchListContentView: View {
                 recentlyDeletedBatch = nil
             }
         } message: {
-            Text("Do you want to restore this batch?")
+            Text("You can undo this action now.")
         }
     }
 }
