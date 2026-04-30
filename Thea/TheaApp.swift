@@ -11,8 +11,7 @@ import SwiftUI
 struct TheaApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationStack{
-                BatchListView()
-            }}
+            AppTabView()
+        }
     }
 }

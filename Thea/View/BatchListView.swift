@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BatchListView: View {
-    @StateObject var vm =  BatchViewModel()
+    @ObservedObject var vm: BatchViewModel
     @State private var isAddBatchViewSheet: Bool = false
     @State var sortOption : BatchSortOption = .largestVolume
     @State var searchText = ""
@@ -82,6 +82,6 @@ struct BatchListView: View {
 
 #Preview {
     NavigationStack{
-        BatchListView()
+        BatchListView(vm: BatchViewModel())
     }}
 
