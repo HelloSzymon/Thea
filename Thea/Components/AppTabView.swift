@@ -17,7 +17,7 @@ struct AppTabView: View {
                     BatchListView(vm: vm)
                 }
             }
-            Tab("Analitycs", systemImage: "chart.bar") {
+            Tab("Analytics", systemImage: "chart.bar") {
                 NavigationStack {
                     AnalyticsView(batches: vm.batchData)
                         .navigationTitle("Analytics")
