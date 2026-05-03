@@ -16,6 +16,7 @@ struct BatchDetailView: View {
             return nil
         }
 
+
         return Binding(
             get: { vm.batchData[index] },
             set: { vm.batchData[index] = $0 }
